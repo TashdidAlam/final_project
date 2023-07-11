@@ -73,9 +73,7 @@ kind: ConfigMap
 metadata:
   name: my-config-map
 data:
-  config.properties: |
-    db.username: root
-    db.name: sparklmsdb
+  mysql-database: sparklmsdb
 
 ---
 apiVersion: apps/v1
@@ -102,6 +100,9 @@ spec:
             secretKeyRef:
               name: mysql-secrets
               key: root-password
+          configMapKeyRef:
+                  name: my-config-map
+                  key: mysql-database
         ports:
         - containerPort: 3306
         imagePullPolicy: Always
