@@ -1,4 +1,4 @@
-def imageName = "tashdidalam/spark_lms:latest"
+def imageName = "tashdidalam/spark_lms::${BUILD_ID}"
 def kube_config = 'kube_config'
 def git_config = 'github_ssh'
 
