@@ -43,6 +43,7 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: DOCKER_REGISTRY_CREDENTIALS, url: '') {
                         img_todo.push()
+                        img_todo.push('latest')
                     }
                 }
             }
