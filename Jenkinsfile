@@ -52,15 +52,15 @@ pipeline {
             steps {
                 script {
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kube_config', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                        def sqlDeploymentExists = sh(
-                            script: 'kubectl get deployment -l app=my-mysql -o name',
+                        def sql = sh(
+                            script: 'kubectl get pod -l app=my-mysql -o name',
                             returnStatus: true
                         )
-                        def jarDeploymentExists = sh(
-                            script: 'kubectl get deployment -l app=my-webserver -o name',
+                        def web = sh(
+                            script: 'kubectl get pod -l app=my-webserver -o name',
                             returnStatus: true
                         )
-                        if (jarDeploymentExists == 0 || sqlDeploymentExists == 0) {
+                        if (web == 0 || sql == 0) {
                             try {
                                 sh 'kubectl delete -f app.yml'
                             } catch (Exception e) {
