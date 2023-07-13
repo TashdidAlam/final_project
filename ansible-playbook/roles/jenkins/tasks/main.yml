@@ -1,0 +1,29 @@
+---
+- name: Install Jenkins
+  apt:
+    name: openjdk-11-jdk
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: fetching Jenkins apt key
+  command: curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key
+
+- name: Adding jenkins apt key
+  command: sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+- name: Add Jenkins repository
+  command: echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]  https://pkg.jenkins.io/debian-stable binary/
+
+- name: Jenkins repo (tee)
+  command: sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: present
+
+- name: Start and enable Jenkins service
+  service:
+    name: jenkins
+    state: started
+    enabled: yes

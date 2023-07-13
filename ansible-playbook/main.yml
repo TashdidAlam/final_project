@@ -1,0 +1,10 @@
+---
+- name: Install Jenkins and Docker
+  hosts: localhost
+  connection: local
+  become: true
+
+  roles:
+    - jenkins
+    - docker
+
