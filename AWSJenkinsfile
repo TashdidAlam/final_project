@@ -1,0 +1,57 @@
+def git_config = 'github_ssh'
+
+pipeline {
+    agent any
+    triggers{
+        pollSCM('H/5 * * * *')
+    }
+    
+    options {
+  buildDiscarder logRotator(daysToKeepStr: '1', numToKeepStr: '7')
+}
+    
+    environment {
+        GIT_REPO_URL = 'git@github.com:TashdidAlam/final_project.git'
+    }
+    
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'aws-deploy', credentialsId: git_config, url: GIT_REPO_URL
+            }
+        }
+        stage('Modify application.properties') {
+            steps {
+               script {
+                    withCredentials([
+                          string(credentialsId: 'aws_db_url', variable: 'dbUrl'),
+                          string(credentialsId: 'aws_db_username', variable: 'dbUsername'),
+                          string(credentialsId: 'aws_db_password', variable: 'dbPassword')
+            ]) {
+                sh """
+                sed -i "s|spring.datasource.url =.*|spring.datasource.url = \${dbUrl}|g" /var/lib/jenkins/workspace/On_premise_deployment/src/main/resources/application.properties
+                sed -i "s|spring.datasource.username =.*|spring.datasource.username = \${dbUsername}|g" /var/lib/jenkins/workspace/On_premise_deployment/src/main/resources/application.properties
+                sed -i "s|spring.datasource.password =.*|spring.datasource.password = \${dbPassword}|g" /var/lib/jenkins/workspace/On_premise_deployment/src/main/resources/application.properties
+                """
+            }
+         }
+       }
+      }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        
+          stage('deploy project') {
+            steps {
+                sh 'ansible-playbook aws-deploy.yml'
+            }
+        }
+    }
+        post {
+        always {
+            cleanWs()
+        }
+    }
+}
