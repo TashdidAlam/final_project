@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'aws-deploy', credentialsId: git_config, url: GIT_REPO_URL
+                git branch: 'route-fix', credentialsId: git_config, url: GIT_REPO_URL
             }
         }
         stage('Modify application.properties') {
