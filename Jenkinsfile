@@ -23,7 +23,23 @@ pipeline {
                 git branch: 'route-fix', credentialsId: git_config, url: GIT_REPO_URL
             }
         }
-        
+         stage('Modify application.properties') {
+            steps {
+               script {
+                    withCredentials([
+                          string(credentialsId: 'DB_URL', variable: 'dbUrl'),
+                          string(credentialsId: 'DB_USERNAME', variable: 'dbUsername'),
+                          string(credentialsId: 'DB_PASSWORD', variable: 'dbPassword')
+            ]) {
+                sh """
+                sed -i "s|spring.datasource.url =.*|spring.datasource.url = \${dbUrl}|g" /var/lib/jenkins/workspace/On_premise_deployment/src/main/resources/application.properties
+                sed -i "s|spring.datasource.username =.*|spring.datasource.username = \${dbUsername}|g" /var/lib/jenkins/workspace/On_premise_deployment/src/main/resources/application.properties
+                sed -i "s|spring.datasource.password =.*|spring.datasource.password = \${dbPassword}|g" /var/lib/jenkins/workspace/On_premise_deployment/src/main/resources/application.properties
+                """
+            }
+         }
+       }
+      }
         stage('Build') {
             steps {
                 sh 'mvn clean install'
