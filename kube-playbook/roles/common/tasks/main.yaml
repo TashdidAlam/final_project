@@ -17,14 +17,14 @@
     enabled: false
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Change SELinux enforcing to disabled
+- name: Disabling SELinux
   lineinfile:
     path: "{{ selinux_config_file }}"
     line: "SELINUX=disabled"
     regexp: "^SELINUX="
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Create k8s.conf file
+- name: Creation of k8s.conf file
   copy:
     dest: /etc/modules-load.d/k8s.conf
     content: ""
@@ -60,7 +60,7 @@
     - net.ipv4.ip_forward
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Disable swap
+- name: Swap Disabling
   replace:
     path: /etc/fstab
     regexp: '^(.*swap.*)$'
@@ -68,12 +68,12 @@
   become: true
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Turn off swap
+- name: Swap turning off
   command: swapoff -a
   become: true
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Install required packages for Docker
+- name: Docker package installation
   package:
     name: dnf-utils
     state: present
@@ -89,18 +89,18 @@
   command: dnf makecache
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Install containerd
+- name: Containerd Installation
   package:
     name: containerd.io
     state: present
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Generate containerd config.toml
+- name: Generating containerd config.tom
   ansible.builtin.command: containerd config default
   register: containerd_config_result
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Save containerd config.toml
+- name: Saving containerd config.toml
   ansible.builtin.copy:
     content: "{{ containerd_config_result.stdout }}"
     dest: /etc/containerd/config.toml
@@ -109,7 +109,7 @@
     mode: '0644'
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Create a backup of the containerd configuration file
+- name: Backing up containerd configuration file
   ansible.builtin.command:
     cmd: sudo cp /etc/containerd/config.toml /etc/containerd/config.toml.orig
   when: ansible_facts['os_family'] == 'RedHat'
@@ -155,7 +155,7 @@
   command: dnf makecache
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Install kubelet, kubeadm, and kubectl
+- name: Installing kubelet, kubeadm, and kubectl
   package:
     name:
       - kubelet
