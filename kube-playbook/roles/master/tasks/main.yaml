@@ -1,4 +1,4 @@
-- name: Pull Kubernetes images
+- name: Kubernetes Image pull
   command: sudo kubeadm config images pull
 
 - name: Enable IP forwarding
@@ -18,7 +18,7 @@
     state: directory
     mode: '0755'
 
-- name: Save the whole output
+- name: Saving the output
   copy:
     content: "{{ kubeadm_output.stdout }}"
     dest: "{{ ansible_user_dir }}/k8s-worker-add-code/init_output.txt"
