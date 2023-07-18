@@ -45,7 +45,7 @@ pipeline {
         
           stage('deploy project') {
             steps {
-                sh 'ansible-playbook aws-deploy.yml'
+                sh 'ansible-playbook aws-deploy_2.yml'
             }
         }
     }
