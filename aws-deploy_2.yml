@@ -28,10 +28,10 @@
     - name: Reload systemd manager configuration
       command: "systemctl daemon-reload"
       
-    - name: Stop and disable App service
-      systemd:
-        name: app
-        state: stopped
+    # - name: Stop and disable App service
+    #   systemd:
+    #     name: app
+    #     state: stopped
 
     - name: Restart the service
       systemd:
