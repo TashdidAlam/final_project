@@ -23,12 +23,15 @@
       template:
         src: app.service.j2
         dest: /etc/systemd/system/app.service
-      notify:
-        - Restart Spark LMS service
+
 
     - name: Reload systemd manager configuration
       command: "systemctl daemon-reload"
-
+      
+    - name: Stop and disable Spark LMS service
+      systemd:
+        name: app
+        state: stopped
 
     - name: Start the service
       systemd:
