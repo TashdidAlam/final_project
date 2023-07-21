@@ -2,6 +2,10 @@ def git_config = 'github_ssh'
 
 pipeline {
     agent any
+    
+    tools {
+        maven "maven-3.9.3"
+    }
     triggers{
         pollSCM('H/5 * * * *')
     }
@@ -40,6 +44,18 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn clean install'
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonarqube', variable: 'SONARQUBE_TOKEN')]) {
+                    withSonarQubeEnv('sonarqube') {
+                        script {
+                            sh "mvn sonar:sonar -Dsonar.projectKey=jenkins -Dsonar.host.url=http://192.168.20.242:9000 -Dsonar.login=${SONARQUBE_TOKEN}"
+                        }
+                    }
+                }
             }
         }
         
