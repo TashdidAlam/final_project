@@ -64,6 +64,11 @@ pipeline {
                 }
             }
         }
+        stage('Docker Image Remove') {
+            steps {
+                sh "docker rmi $imagename"
+            }
+        }
         
         stage('Deploy to Kubernetes') {
             steps {
