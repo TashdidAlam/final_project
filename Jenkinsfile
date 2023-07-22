@@ -9,9 +9,9 @@ tools {
         maven "maven-3.9.3"
     }
     
-    triggers{
-        pollSCM('H/5 * * * *')
-    }
+    // triggers{
+    //     pollSCM('H/5 * * * *')
+    // }
     
     options {
   buildDiscarder logRotator(daysToKeepStr: '1', numToKeepStr: '7')
