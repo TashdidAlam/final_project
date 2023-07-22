@@ -74,13 +74,13 @@ pipeline {
             slackSend channel: 'jenkins', color: 'good', message: 'The Pipeline Ran Successfully', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
         
             }
-            failure{
-            slackSend channel: 'jenkins', color: 'danger', message: 'The Pipeline Failed', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
-        
-            }
-            unstable{
-            slackSend channel: 'jenkins', color: 'warning', message: 'The Pipeline is Unstable', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
-        
-            }
+        failure{
+        slackSend channel: 'jenkins', color: 'danger', message: 'The Pipeline Failed', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
+    
+        }
+        unstable{
+        slackSend channel: 'jenkins', color: 'warning', message: 'The Pipeline is Unstable', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
+    
+        }
     }
 }
