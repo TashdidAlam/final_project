@@ -68,6 +68,7 @@ pipeline {
         post {
         always {
             cleanWs()
+            slackSend channel: 'jenkins', color: 'good', message: 'Hello', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
         }
     }
 }
