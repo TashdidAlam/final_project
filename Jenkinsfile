@@ -118,14 +118,17 @@ tools {
             echo 'One way or another, I have finished'
             deleteDir()
         }
-        success {
-            echo 'I succeeded!'
+        success{
+            slackSend channel: 'jenkins', color: 'good', message: 'On-premise Pipeline Ran Successfully', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
+        
+            }
+        failure{
+        slackSend channel: 'jenkins', color: 'danger', message: 'On-premise Pipeline Failed', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
+    
         }
-        unstable {
-            echo 'I am unstable :/'
-        }
-        failure {
-            echo 'I failed :('
+        unstable{
+        slackSend channel: 'jenkins', color: 'warning', message: 'On-premise Pipeline is Unstable', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
+    
         }
     }
 }
