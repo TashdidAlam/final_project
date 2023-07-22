@@ -1,4 +1,5 @@
 def imageName = "tashdidalam/spark_lms:${BUILD_ID}"
+def imgLatest = "tashdidalam/spark_lms:latest"
 def kube_config = 'kube_config'
 def git_config = 'github_ssh'
 
@@ -84,6 +85,7 @@ tools {
         stage('Docker Image Remove') {
             steps {
                 sh "docker rmi $imageName"
+                sh "docker rmi $imgLatest"
             }
         }
         
