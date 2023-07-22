@@ -71,15 +71,15 @@ pipeline {
             cleanWs()
             }
         success{
-            slackSend channel: 'jenkins', color: 'good', message: 'The Pipeline Ran Successfully', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
+            slackSend channel: 'jenkins', color: 'good', message: 'AWS Pipeline Ran Successfully', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
         
             }
         failure{
-        slackSend channel: 'jenkins', color: 'danger', message: 'The Pipeline Failed', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
+        slackSend channel: 'jenkins', color: 'danger', message: 'AWS Pipeline Failed', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
     
         }
         unstable{
-        slackSend channel: 'jenkins', color: 'warning', message: 'The Pipeline is Unstable', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
+        slackSend channel: 'jenkins', color: 'warning', message: 'AWS Pipeline is Unstable', teamDomain: 'bjit-crew', tokenCredentialId: 'slack-id'
     
         }
     }
